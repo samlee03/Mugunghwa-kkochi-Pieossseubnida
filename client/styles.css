@@ -1,0 +1,51 @@
+*, *::before, *::after {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.App {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#map-area {
+    width: 95vw;
+    height: 90vh;
+    border: 1px solid black;
+
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+#player-box {
+    --x: 1;
+    --y: 43;
+    position: absolute;
+    /* left: 0; */
+    left: calc(var(--x) * 1vw);
+    top: calc(var(--y) * 1vh);
+    width: 2vw;
+    height: 2vw;
+
+    background-color: green;
+}
+
+#bot {
+    position: absolute;
+    width: 3vw;
+    height: 2.5vw;
+    right: 5vw;
+    background-color: red;
+    border: 1px solid black;   
+    border-left: 1vh dashed black;
+}
+
+#finish-line{
+    position: absolute;
+    right: 9vw;
+    height: 100%;
+    width: 1vh;
+    background-color: rgb(255, 123, 123);
+}
