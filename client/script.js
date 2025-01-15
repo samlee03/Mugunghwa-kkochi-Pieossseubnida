@@ -4,7 +4,25 @@ const playerBox = document.getElementById("player-box");
 
 const startBtn = document.getElementById("start-game");
 let gameStart = false;
+let gameLost = false;
+let gameWin = false;
 let color = "green"
+
+const timer = document.getElementById("timer");
+const startTimer = () => {
+    let time = 60;
+
+    let interval = setInterval(() => {
+        if (time > 0 && gameStart) {
+            time -= 1
+            timer.innerText = `0:${time.toString().padStart(2, '0')}`;
+        } else {
+            gameStart = false;
+            console.log("no time");
+            clearInterval(interval); 
+        }    
+    }, 1000)
+}
 const changeBackground = () => {
     map.style.backgroundColor = 'var(--green)';
     
@@ -27,9 +45,11 @@ const changeBackground = () => {
 startBtn.addEventListener('click', e => {
     gameStart = true;
     startBtn.remove();
+    startTimer();
     changeBackground();
 })
 
+const subtitle = document.getElementById("subtitle")
 document.addEventListener("keydown", e => {
     if (!gameStart) {
         return; 
@@ -47,27 +67,52 @@ document.addEventListener("keydown", e => {
     if (e.key === "ArrowRight" && currentX < mapWidthInVW - playerWidthInVW) {
         if (color == "red"){
             console.log("YOU'RE OUTTTT");
+            subtitle.innerText = "You moved on a red light."
             gameStart = false;
             return;
         }
+        
         currentX += 0.2;
+        if (currentX > 85){
+            console.log("You win!");
+            subtitle.innerText = 'You win.';
+            gameStart = false;
+        }
         playerBox.style.setProperty('--x', currentX);
     }
 
     // Move Left
     if (e.key === "ArrowLeft" && currentX > 0) {
+        if (color == "red"){
+            console.log("YOU'RE OUTTTT");
+            subtitle.innerText = "You moved on a red light."
+            gameStart = false;
+            return;
+        }
         currentX -= 0.2;
         playerBox.style.setProperty('--x', currentX);
     }
 
     // Move Up
     if (e.key === "ArrowUp" && currentY > 0) {
+        if (color == "red"){
+            console.log("YOU'RE OUTTTT");
+            subtitle.innerText = "You moved on a red light."
+            gameStart = false;
+            return;
+        }
         currentY -= 0.2;
         playerBox.style.setProperty('--y', currentY);
     }
 
     // Move Down
     if (e.key === "ArrowDown" && currentY < mapHeightInVH - playerHeightInVH) {
+        if (color == "red"){
+            console.log("YOU'RE OUTTTT");
+            subtitle.innerText = "You moved on a red light."
+            gameStart = false;
+            return;
+        }
         currentY += 0.2;
         playerBox.style.setProperty('--y', currentY);
     }
