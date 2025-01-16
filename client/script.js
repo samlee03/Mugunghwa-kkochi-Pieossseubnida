@@ -59,8 +59,7 @@ const changeBackground = () => {
             if (!gameStart) {
                 return;
             }
-            // audio.playbackRate += 0.5; // Speed up audio each time it switches
-            audio.playbackRate += (Math.random() * 1.25) - 0.25;  // Random change between -0.25 and +0.25
+            audio.playbackRate += (Math.random() * 1.25) - 0.25;  // Random change between -0.25 and +1.00
             console.log(audio.playbackRate);
             audio.playbackRate = Math.max(1, Math.min(audio.playbackRate, 4)); // Clamp between 0.75 and 4
             audio.play();
@@ -135,12 +134,12 @@ retry.addEventListener('click', () => {
     retry.style.visibility = "hidden";
     
     // Call resetGame to reset all properties and start fresh
-    // if (resetTimeout) {
-        
-    // }
+    if (resetTimeout) {
+        clearTimeout(resetTimeout);
+    }
     // resetGame();
     
-    let resetTimeout = setTimeout(() => {
+    resetTimeout = setTimeout(() => {
         subtitle.innerText = "";
         resetGame();
     }, 1000);
