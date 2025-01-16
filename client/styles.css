@@ -7,8 +7,10 @@ body {
     width: 100vw;
 }
 :root {
-    --red: rgb(255, 203, 203);
-    --green: rgb(215, 255, 185);
+    /* --red: rgb(255, 203, 203);
+    --green: rgb(215, 255, 185); */
+    --red: rgb(254, 241, 241);
+    --green: rgb(243, 255, 234);
     --none: white;
 }
 .app-container {
@@ -58,6 +60,7 @@ body {
     --x: 1;
     --y: 43;
     position: absolute;
+    border-radius: .3rem;
     /* left: 0; */
     left: calc(var(--x) * 1vw);
     top: calc(var(--y) * 1vh);
@@ -73,7 +76,19 @@ body {
     height: 2.5vw;
     right: 5vw;
     background-color: red;
-    border: 1px solid black;   
+    /* border: 1px solid black;    */
+    /* border-left: 1vh dashed black; */
+}
+#retry {
+    position: absolute;
+    visibility: hidden;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.bot-right {
+    border-right: 1vh dashed black;
+}
+.bot-left {
     border-left: 1vh dashed black;
 }
 

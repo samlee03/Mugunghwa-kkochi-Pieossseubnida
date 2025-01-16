@@ -1,6 +1,12 @@
-console.log("Script is running");
 const map = document.getElementById("map-area");
 const playerBox = document.getElementById("player-box");
+const bot = document.getElementById("bot");
+
+const audio = new Audio('assets/audio/green-red.mp3');
+audio.preload = 'auto';  
+
+const scanAudio = new Audio('assets/audio/squid-scan-sound.mp3');
+scanAudio.preload = 'auto';
 
 const startBtn = document.getElementById("start-game");
 let gameStart = false;
@@ -9,45 +15,87 @@ let gameWin = false;
 let color = "green"
 
 const timer = document.getElementById("timer");
+let timerInterval;
 const startTimer = () => {
     let time = 60;
-
-    let interval = setInterval(() => {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    }
+    timerInterval = setInterval(() => {
         if (time > 0 && gameStart) {
-            time -= 1
-            timer.innerText = `0:${time.toString().padStart(2, '0')}`;
+            time -= 1;
+            timer.innerText = `00:${time.toString().padStart(2, '0')}`;
         } else {
             gameStart = false;
             console.log("no time");
-            clearInterval(interval); 
+            clearInterval(timerInterval); 
         }    
     }, 1000)
 }
+
+let changeBackgroundTimeout; 
 const changeBackground = () => {
-    map.style.backgroundColor = 'var(--green)';
+    audio.playbackRate = 1.2;
     
+    audio.play();
+    color = "green";
+    map.style.backgroundColor = 'var(--green)';
+    bot.classList.replace('bot-left', 'bot-right');
+
     const switchToRed = () => {
+        if (changeBackgroundTimeout) {
+            clearTimeout(changeBackgroundTimeout);
+        }
+        scanAudio.play();
         color = "red";
         map.style.backgroundColor = 'var(--red)';
+        bot.classList.replace('bot-right', 'bot-left');
+
         setTimeout(() => {
-            if(!gameStart){
+            if (!gameStart) {
                 return;
             }
+            audio.playbackRate = audio.playbackRate + .5;
+            audio.play();
             map.style.backgroundColor = 'var(--green)';
+            bot.classList.replace('bot-left', 'bot-right');
+
             color = "green";
-            const randomDelay = (Math.random() * 3) + 2; 
-            setTimeout(switchToRed, randomDelay * 1000); 
-        }, 2000); 
+            // const randomDelay = (Math.random() * 3) + 2;  // Random delay between 2-5 seconds
+            const audioDuration = audio.duration / audio.playbackRate;
+            changeBackgroundTimeout = setTimeout(switchToRed, audioDuration  * 1000);
+        }, 2250);  // Delay before switching to green again
     };
-    
-    switchToRed();
+    const audioDuration = audio.duration / audio.playbackRate;
+
+    changeBackgroundTimeout = setTimeout(switchToRed, audioDuration * 1000);
 };
+
 startBtn.addEventListener('click', e => {
     gameStart = true;
     startBtn.remove();
     startTimer();
     changeBackground();
-})
+});
+
+const retry = document.getElementById("retry");
+retry.addEventListener('click', () => {
+    console.log("retried");
+    subtitle.innerText = "";
+    gameStart = true;
+    retry.style.visibility = "hidden";
+    timer.innerText = "01:00";
+    
+    playerBox.style.setProperty('--x', 1);
+    playerBox.style.setProperty('--y', 43);
+
+    if (changeBackgroundTimeout) {
+        clearTimeout(changeBackgroundTimeout);
+    }
+
+    startTimer();
+    changeBackground();
+});
 
 const subtitle = document.getElementById("subtitle")
 document.addEventListener("keydown", e => {
@@ -68,6 +116,7 @@ document.addEventListener("keydown", e => {
         if (color == "red"){
             console.log("YOU'RE OUTTTT");
             subtitle.innerText = "You moved on a red light."
+            retry.style.visibility = "visible";
             gameStart = false;
             return;
         }
@@ -86,6 +135,7 @@ document.addEventListener("keydown", e => {
         if (color == "red"){
             console.log("YOU'RE OUTTTT");
             subtitle.innerText = "You moved on a red light."
+            retry.style.visibility = "visible";
             gameStart = false;
             return;
         }
@@ -98,6 +148,7 @@ document.addEventListener("keydown", e => {
         if (color == "red"){
             console.log("YOU'RE OUTTTT");
             subtitle.innerText = "You moved on a red light."
+            retry.style.visibility = "visible";
             gameStart = false;
             return;
         }
@@ -110,6 +161,7 @@ document.addEventListener("keydown", e => {
         if (color == "red"){
             console.log("YOU'RE OUTTTT");
             subtitle.innerText = "You moved on a red light."
+            retry.style.visibility = "visible";
             gameStart = false;
             return;
         }

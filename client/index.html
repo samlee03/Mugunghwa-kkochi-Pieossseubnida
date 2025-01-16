@@ -9,13 +9,15 @@
 <body>
   <div id="overlays">
     <button id="start-game">Start Game</button>
-    <p id="timer">1:00</p>
+    <p id="timer">01:00</p>
+    <audio id="game-audio" src="assets/audio/squid3.mp3" preload="auto"></audio>
     <p id="subtitle"></p>
+    <button id="retry">Retry</button>
   </div>
   <div class="app-container">
     <div id="map-area">
       <div id="player-box"></div>
-      <div id="bot"></div>
+      <div id="bot" class="bot-left"></div>
       <div id="finish-line"></div>
     </div>
   </div>
