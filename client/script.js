@@ -41,7 +41,7 @@ const changeBackground = () => {
     // Start the audio
     audio.play();
     color = "green";
-    map.style.backgroundColor = 'var(--green)';
+    // map.style.backgroundColor = 'var(--green)';
     bot.classList.replace('bot-left', 'bot-right');
 
     // Function to switch to red background after some time
@@ -51,7 +51,7 @@ const changeBackground = () => {
         }
         scanAudio.play();
         color = "red";
-        map.style.backgroundColor = 'var(--red)';
+        // map.style.backgroundColor = 'var(--red)';
         bot.classList.replace('bot-right', 'bot-left');
 
         // Switch back to green after the delay (based on audio duration and playback rate)
@@ -59,11 +59,11 @@ const changeBackground = () => {
             if (!gameStart) {
                 return;
             }
-            audio.playbackRate += (Math.random() * 1.25) - 0.25;  // Random change between -0.25 and +1.00
-            console.log(audio.playbackRate);
-            audio.playbackRate = Math.max(1, Math.min(audio.playbackRate, 4)); // Clamp between 0.75 and 4
+            audio.playbackRate += (Math.random() * 1) - 0.25;  // Random change between -0.25 and +1.00
+            audio.playbackRate = Math.max(1, Math.min(audio.playbackRate, 3.8)); // Clamp between 0.75 and 4
+            console.log(audio.playbackRate);    
             audio.play();
-            map.style.backgroundColor = 'var(--green)';
+            // map.style.backgroundColor = 'var(--green)';
             bot.classList.replace('bot-left', 'bot-right');
 
             color = "green";
@@ -102,7 +102,7 @@ const resetGame = () => {
     playerBox.style.setProperty('--y', 43);
 
     // Reset background color and bot position
-    map.style.backgroundColor = 'var(--green)';
+    // map.style.backgroundColor = 'var(--green)';
     bot.classList.replace('bot-left', 'bot-right');
     
     // Stop and reset audio
