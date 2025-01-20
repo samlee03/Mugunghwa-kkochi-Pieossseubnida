@@ -72,10 +72,15 @@ body {
     /* left: 0; */
     left: calc(var(--x) * 1vw);
     top: calc(var(--y) * 1vh);
-    width: 2vw;
-    height: 2vw;
+    width: 3.5vw;
+    height: 3.5vw;
 
-    background-color: green;
+    /* background-color: green; */
+    background-image: url('./assets/images/man.webp');
+    background-position: center;
+    background-repeat: none;
+    background-size: contain;
+    transform: scaleX(-1); /* Flips the image along the X-axis */
 }
 
 #bot {
@@ -99,10 +104,14 @@ body {
     visibility: hidden;
     left: 50%;
     transform: translateX(-50%);
-    
-    border-radius: 2px;
+    background-color: rgba(0, 109, 27, 0.084);
+
+    border-radius: 20px;
     padding: 5px 10px;
-    background-color: rgb(216, 255, 216);
+    font-weight: 700;
+    height: 5vh;
+    width: 5vw;
+    /* background-color: rgb(216, 255, 216); */
 }
 .bot-right {
     /* border-right: 1vh dashed black; */
