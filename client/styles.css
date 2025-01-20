@@ -100,7 +100,7 @@ body {
     background-color: red;
 }
 #retry {
-    position: absolute;
+    /* position: absolute;
     visibility: hidden;
     left: 50%;
     transform: translateX(-50%);
@@ -110,8 +110,36 @@ body {
     padding: 5px 10px;
     font-weight: 700;
     height: 5vh;
-    width: 5vw;
-    /* background-color: rgb(216, 255, 216); */
+    width: 5vw; */
+
+    visibility: hidden;
+    position: absolute;
+    background-color: rgba(0, 109, 27, 0.084);
+    width: 50vw;
+    height: 20vh;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    font-size: 3rem;
+    font-weight: 700;
+    border-radius: 20px;
+
+}
+
+#new-game{
+    visibility: hidden;
+    position: absolute;
+    background-color: rgba(0, 109, 27, 0.084);
+    width: 50vw;
+    height: 20vh;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    font-size: 3rem;
+    font-weight: 700;
+    border-radius: 20px;
 }
 .bot-right {
     /* border-right: 1vh dashed black; */
