@@ -132,6 +132,7 @@ const refreshGame = () => {
 
     subtitle.innerText = "Retrying..";
     retry.style.visibility = "hidden";
+    newGame.style.visibility = "hidden";
     
     if (resetTimeout) {
         clearTimeout(resetTimeout);
@@ -174,11 +175,57 @@ let keysPressed = {
     up: false,
     down: false
 };
+
+let frames = [
+    './assets/images/image-1.png.png',
+    './assets/images/image-2.png.png',
+    './assets/images/image-3.png.png',
+    './assets/images/image-4.png.png',
+    './assets/images/image-5.png.png',
+    './assets/images/image-6.png.png',
+
+]
+
+let currentFrame = 0;
+// const changeFrame = () => {
+//     currFrame += 1;
+//     currFrame %= 3;
+//     playerBox.style.backgroundImage = `url(${frames[currFrame]})`
+//     console.log("Change frame to ", currFrame);
+// }
+let changeFrameTimeout;
+let changeFrameInterval = null;
+function changeFrame() {
+    currentFrame = (currentFrame + 1) % frames.length;
+    playerBox.style.backgroundImage = `url(${frames[currentFrame]})`;
+}
+
+function startChangingFrames() {
+    if (changeFrameInterval) return;
+    if (!changeFrameInterval) {
+        changeFrameInterval = setInterval(() => {
+        changeFrame();
+        }, 150); // Change frame every 100ms while the key is held
+    }
+}
+
+function stopChangingFrames() {
+    clearInterval(changeFrameInterval);
+    changeFrameInterval = null; // Reset interval to allow new interval when key is held again
+}
+let isChangingFrame = false; 
 document.addEventListener("keydown", e => {
     if (!gameStart) {
         return; 
     }
-    if (e.key === "ArrowRight") keysPressed.right = true;
+    if (e.key === "ArrowRight") {
+        keysPressed.right = true
+        if (!isChangingFrame) {
+            changeFrame(); // Change the frame once
+            isChangingFrame = true; // Mark that the key is being held
+        }
+        startChangingFrames();
+    };
     if (e.key === "ArrowLeft") keysPressed.left = true;
     if (e.key === "ArrowUp") keysPressed.up = true;
     if (e.key === "ArrowDown") keysPressed.down = true;
@@ -205,7 +252,7 @@ document.addEventListener("keydown", e => {
         if (currentX > 85){
             console.log("You win!");
             subtitle.innerText = 'You win.';
-            // newGame.style.visibility = "visible";
+            newGame.style.visibility = "visible";
 
             gameStart = false;
         }
@@ -252,7 +299,11 @@ document.addEventListener("keydown", e => {
     }
 });
 document.addEventListener("keyup", e => {
-    if (e.key === "ArrowRight") keysPressed.right = false;
+    if (e.key === "ArrowRight") {
+        keysPressed.right = false
+        stopChangingFrames();
+        isChangingFrame = false;
+    };
     if (e.key === "ArrowLeft") keysPressed.left = false;
     if (e.key === "ArrowUp") keysPressed.up = false;
     if (e.key === "ArrowDown") keysPressed.down = false;
