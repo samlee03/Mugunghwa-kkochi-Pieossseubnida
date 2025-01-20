@@ -201,7 +201,7 @@ document.addEventListener("keydown", e => {
             return;
         }
         
-        currentX += 5;
+        currentX += 0.2;
         if (currentX > 85){
             console.log("You win!");
             subtitle.innerText = 'You win.';
