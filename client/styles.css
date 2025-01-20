@@ -76,11 +76,10 @@ body {
     height: 3.5vw;
 
     /* background-color: green; */
-    background-image: url('./assets/images/man.webp');
+    background-image: url('./assets/images/PLAYER000.png');
     background-position: center;
-    background-repeat: none;
+    background-repeat: no-repeat;
     background-size: contain;
-    transform: scaleX(-1); /* Flips the image along the X-axis */
 }
 
 #bot {
@@ -95,9 +94,9 @@ body {
     height: 15vh; */
     width: 8vw;
     height: 30vh;
-    border: 4px solid red;
+    /* border: 4px solid red; */
     right: 0.5vw;
-    background-color: red;
+    /* background-color: red; */
 }
 #retry {
     /* position: absolute;
@@ -143,14 +142,14 @@ body {
 }
 .bot-right {
     /* border-right: 1vh dashed black; */
-    background-image: url("./assets/images/wangu-lee-side.jpg");
+    background-image: url("./assets/images/back.png");
     background-repeat: no-repeat; /* Ensures the image doesn't repeat */
     background-position: center; /* Centers the image horizontally and vertically */
     background-size: contain;
 }
 .bot-left {
     /* border-left: 1vh dashed black; */
-    background-image: url("./assets/images/wangu-lee-side2.jpg");
+    background-image: url("./assets/images/front.png");
     background-repeat: no-repeat; /* Ensures the image doesn't repeat */
     background-position: center; /* Centers the image horizontally and vertically */
     background-size: contain;

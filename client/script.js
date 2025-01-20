@@ -126,6 +126,23 @@ const resetGame = () => {
 
 let resetTimeout;
 // Retry button listener
+
+const refreshGame = () => {
+    console.log("retried");
+
+    subtitle.innerText = "Retrying..";
+    retry.style.visibility = "hidden";
+    
+    if (resetTimeout) {
+        clearTimeout(resetTimeout);
+    }
+    
+    resetTimeout = setTimeout(() => {
+        subtitle.innerText = "";
+        resetGame();
+    }, 1000);
+
+}
 retry.addEventListener('click', () => {
     console.log("retried");
 
@@ -145,6 +162,9 @@ retry.addEventListener('click', () => {
     }, 1000);
 
 });
+
+const newGame = document.getElementById("new-game");
+newGame.addEventListener('click', refreshGame)
 
 const subtitle = document.getElementById("subtitle")
 
@@ -181,10 +201,12 @@ document.addEventListener("keydown", e => {
             return;
         }
         
-        currentX += 0.2;
+        currentX += 5;
         if (currentX > 85){
             console.log("You win!");
             subtitle.innerText = 'You win.';
+            // newGame.style.visibility = "visible";
+
             gameStart = false;
         }
         playerBox.style.setProperty('--x', currentX);
