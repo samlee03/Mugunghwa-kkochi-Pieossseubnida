@@ -43,32 +43,37 @@ const changeBackground = () => {
     color = "green";
     // map.style.backgroundColor = 'var(--green)';
     bot.classList.replace('bot-left', 'bot-right');
-
+    bot.style.backgroundImage = `url(${dollFrame[0]})`;
     const switchToRed = () => {
         if (changeBackgroundTimeout) {
             clearTimeout(changeBackgroundTimeout);
         }
+
         scanAudio.play();
-        color = "red";
-        // map.style.backgroundColor = 'var(--red)';
-        bot.classList.replace('bot-right', 'bot-left');
-
+        changeDollFrames(); // Takes 600ms
         setTimeout(() => {
-            if (!gameStart) {
-                return;
-            }
-            audio.playbackRate += (Math.random() * 1) - 0.25;  // Random change between -0.25 and +1.00
-            audio.playbackRate = Math.max(1, Math.min(audio.playbackRate, 3.8)); // Clamp between 0.75 and 4
-            console.log(audio.playbackRate);    
-            audio.play();
-            // map.style.backgroundColor = 'var(--green)';
-            bot.classList.replace('bot-left', 'bot-right');
 
-            color = "green";
-
-            const audioDuration = audio.duration / audio.playbackRate;
-            changeBackgroundTimeout = setTimeout(switchToRed, audioDuration * 1000); // Delay based on modified audio duration
-        }, 2250);  // Wait 2.25 seconds before switching to green again
+            color = "red";
+            // map.style.backgroundColor = 'var(--red)';
+            bot.classList.replace('bot-right', 'bot-left');
+            
+            setTimeout(() => {
+                if (!gameStart) {
+                    return;
+                }
+                audio.playbackRate += (Math.random() * 1) - 0.25;  // Random change between -0.25 and +1.00
+                audio.playbackRate = Math.max(1, Math.min(audio.playbackRate, 3.8)); // Clamp between 0.75 and 4
+                console.log(audio.playbackRate);    
+                audio.play();
+                // map.style.backgroundColor = 'var(--green)';
+                bot.classList.replace('bot-left', 'bot-right');
+                bot.style.backgroundImage = `url(${dollFrame[0]})`;
+                color = "green";
+                
+                const audioDuration = audio.duration / audio.playbackRate;
+                changeBackgroundTimeout = setTimeout(switchToRed, audioDuration * 1000); // Delay based on modified audio duration
+            }, 2250);  // Wait 2.25 seconds before switching to green again
+        }, 800)
     };
     // Start the first background switch
     const audioDuration = audio.duration / audio.playbackRate;
@@ -164,8 +169,7 @@ let frames = [
     './assets/images/image-3.png.png',
     './assets/images/image-4.png.png',
     './assets/images/image-5.png.png',
-    './assets/images/image-6.png.png',
-
+    './assets/images/image-6.png.png'
 ]
 
 let currentFrame = 0;
@@ -199,6 +203,32 @@ const handleFrame = () => {
         isChangingFrame = true; // Mark that the key is being held
     }
     startChangingFrames();
+}
+
+let currDollFrame = 0;
+let dollTimeouts = [];
+let dollFrame = [
+    './assets/images/back.png',
+    './assets/images/doll/doll1.png',
+    './assets/images/doll/doll2.png',
+    './assets/images/doll/doll3.png',
+    './assets/images/doll/doll4.png',
+    './assets/images/doll/doll5.png',
+    './assets/images/doll/doll6.png',
+    './assets/images/front.png'
+]
+const changeDollFrames = () => {
+    dollTimeouts.forEach(timeout => clearTimeout(timeout));
+
+    // Clear the array of timeouts
+    dollTimeouts = [];
+    for (let i = 0; i < dollFrame.length; i++) {
+        const timeout = setTimeout(() => {
+            console.log(dollFrame[i]);
+            bot.style.backgroundImage = `url(${dollFrame[i]})`;
+        }, i * 100);
+        dollTimeouts.push(timeout);
+    }
 }
 
 
