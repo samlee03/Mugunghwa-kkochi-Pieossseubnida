@@ -226,9 +226,30 @@ document.addEventListener("keydown", e => {
         }
         startChangingFrames();
     };
-    if (e.key === "ArrowLeft") keysPressed.left = true;
-    if (e.key === "ArrowUp") keysPressed.up = true;
-    if (e.key === "ArrowDown") keysPressed.down = true;
+    if (e.key === "ArrowLeft"){
+        keysPressed.left = true;
+        if (!isChangingFrame) {
+            changeFrame(); // Change the frame once
+            isChangingFrame = true; // Mark that the key is being held
+        }
+        startChangingFrames();
+    } 
+    if (e.key === "ArrowUp"){
+        keysPressed.up = true;
+        if (!isChangingFrame) {
+            changeFrame(); // Change the frame once
+            isChangingFrame = true; // Mark that the key is being held
+        }
+        startChangingFrames();
+    };
+    if (e.key === "ArrowDown") {
+        keysPressed.down = true;
+        if (!isChangingFrame) {
+            changeFrame(); // Change the frame once
+            isChangingFrame = true; // Mark that the key is being held
+        }
+        startChangingFrames();
+    };
 
     let currentX = parseFloat(getComputedStyle(playerBox).getPropertyValue('--x'));
     let currentY = parseFloat(getComputedStyle(playerBox).getPropertyValue('--y'));
@@ -304,7 +325,19 @@ document.addEventListener("keyup", e => {
         stopChangingFrames();
         isChangingFrame = false;
     };
-    if (e.key === "ArrowLeft") keysPressed.left = false;
-    if (e.key === "ArrowUp") keysPressed.up = false;
-    if (e.key === "ArrowDown") keysPressed.down = false;
+    if (e.key === "ArrowLeft") {
+        keysPressed.left = false
+        stopChangingFrames();
+        isCahngingFrame = false;
+    };
+    if (e.key === "ArrowUp") {
+        keysPressed.up = false
+        stopChangingFrames();
+        isCahngingFrame = false;
+    };
+    if (e.key === "ArrowDown"){
+        keysPressed.down = false
+        stopChangingFrames();
+        isCahngingFrame = false;
+    };
 });
