@@ -33,18 +33,17 @@ const startTimer = () => {
     }, 1000)
 }
 
+// Red Light, Green Light Handler
 let changeBackgroundTimeout; 
 const changeBackground = () => {
-    audio.playbackRate = 1.2;  // Set the desired playback speed (can adjust as needed)
+    audio.playbackRate = 1.2;
     console.log("Audio playback rate after reset: ", audio.playbackRate);
 
-    // Start the audio
     audio.play();
     color = "green";
     // map.style.backgroundColor = 'var(--green)';
     bot.classList.replace('bot-left', 'bot-right');
 
-    // Function to switch to red background after some time
     const switchToRed = () => {
         if (changeBackgroundTimeout) {
             clearTimeout(changeBackgroundTimeout);
@@ -54,7 +53,6 @@ const changeBackground = () => {
         // map.style.backgroundColor = 'var(--red)';
         bot.classList.replace('bot-right', 'bot-left');
 
-        // Switch back to green after the delay (based on audio duration and playback rate)
         setTimeout(() => {
             if (!gameStart) {
                 return;
@@ -68,17 +66,17 @@ const changeBackground = () => {
 
             color = "green";
 
-            // Calculate the duration based on playback rate to sync background change with audio
             const audioDuration = audio.duration / audio.playbackRate;
             changeBackgroundTimeout = setTimeout(switchToRed, audioDuration * 1000); // Delay based on modified audio duration
         }, 2250);  // Wait 2.25 seconds before switching to green again
     };
-
     // Start the first background switch
     const audioDuration = audio.duration / audio.playbackRate;
     changeBackgroundTimeout = setTimeout(switchToRed, audioDuration * 1000);
 };
 
+
+// Start Game
 startBtn.addEventListener('click', e => {
     gameStart = true;
     startBtn.remove();
@@ -86,7 +84,13 @@ startBtn.addEventListener('click', e => {
     changeBackground();
 });
 
+
+// Repeat Game
+let resetTimeout;
+
 const retry = document.getElementById("retry");
+const newGame = document.getElementById("new-game");
+
 const resetGame = () => {
     // Reset game state
     gameStart = true;
@@ -123,10 +127,6 @@ const resetGame = () => {
     startTimer();
     changeBackground();
 };
-
-let resetTimeout;
-// Retry button listener
-
 const refreshGame = () => {
     console.log("retried");
 
@@ -144,27 +144,9 @@ const refreshGame = () => {
     }, 1000);
 
 }
-retry.addEventListener('click', () => {
-    console.log("retried");
 
-    // Reset subtitle and retry button visibility
-    subtitle.innerText = "Retrying..";
-    retry.style.visibility = "hidden";
-    
-    // Call resetGame to reset all properties and start fresh
-    if (resetTimeout) {
-        clearTimeout(resetTimeout);
-    }
-    // resetGame();
-    
-    resetTimeout = setTimeout(() => {
-        subtitle.innerText = "";
-        resetGame();
-    }, 1000);
-
-});
-
-const newGame = document.getElementById("new-game");
+// Retry + New Game Buttons
+retry.addEventListener('click', refreshGame);
 newGame.addEventListener('click', refreshGame)
 
 const subtitle = document.getElementById("subtitle")
@@ -187,14 +169,10 @@ let frames = [
 ]
 
 let currentFrame = 0;
-// const changeFrame = () => {
-//     currFrame += 1;
-//     currFrame %= 3;
-//     playerBox.style.backgroundImage = `url(${frames[currFrame]})`
-//     console.log("Change frame to ", currFrame);
-// }
 let changeFrameTimeout;
 let changeFrameInterval = null;
+
+// Frame Management
 function changeFrame() {
     currentFrame = (currentFrame + 1) % frames.length;
     playerBox.style.backgroundImage = `url(${frames[currentFrame]})`;
@@ -213,42 +191,37 @@ function stopChangingFrames() {
     clearInterval(changeFrameInterval);
     changeFrameInterval = null; // Reset interval to allow new interval when key is held again
 }
+
 let isChangingFrame = false; 
+const handleFrame = () => {
+    if (!isChangingFrame) {
+        changeFrame(); // Change the frame once
+        isChangingFrame = true; // Mark that the key is being held
+    }
+    startChangingFrames();
+}
+
+
+// Player Movement, // Checks for Win Condition
 document.addEventListener("keydown", e => {
     if (!gameStart) {
         return; 
     }
     if (e.key === "ArrowRight") {
         keysPressed.right = true
-        if (!isChangingFrame) {
-            changeFrame(); // Change the frame once
-            isChangingFrame = true; // Mark that the key is being held
-        }
-        startChangingFrames();
+        handleFrame();
     };
     if (e.key === "ArrowLeft"){
         keysPressed.left = true;
-        if (!isChangingFrame) {
-            changeFrame(); // Change the frame once
-            isChangingFrame = true; // Mark that the key is being held
-        }
-        startChangingFrames();
+        handleFrame();
     } 
     if (e.key === "ArrowUp"){
         keysPressed.up = true;
-        if (!isChangingFrame) {
-            changeFrame(); // Change the frame once
-            isChangingFrame = true; // Mark that the key is being held
-        }
-        startChangingFrames();
+        handleFrame();
     };
     if (e.key === "ArrowDown") {
         keysPressed.down = true;
-        if (!isChangingFrame) {
-            changeFrame(); // Change the frame once
-            isChangingFrame = true; // Mark that the key is being held
-        }
-        startChangingFrames();
+        handleFrame();
     };
 
     let currentX = parseFloat(getComputedStyle(playerBox).getPropertyValue('--x'));
@@ -262,7 +235,6 @@ document.addEventListener("keydown", e => {
     // Move Right
     if (keysPressed.right && currentX < mapWidthInVW - playerWidthInVW) {
         if (color == "red"){
-            console.log("YOU'RE OUTTTT");
             subtitle.innerText = "You moved on a red light."
             retry.style.visibility = "visible";
             gameStart = false;
@@ -271,7 +243,6 @@ document.addEventListener("keydown", e => {
         
         currentX += 0.2;
         if (currentX > 85){
-            console.log("You win!");
             subtitle.innerText = 'You win.';
             newGame.style.visibility = "visible";
 
@@ -283,7 +254,6 @@ document.addEventListener("keydown", e => {
     // Move Left
     if (keysPressed.left && currentX > 0) {
         if (color == "red"){
-            console.log("YOU'RE OUTTTT");
             subtitle.innerText = "You moved on a red light."
             retry.style.visibility = "visible";
             gameStart = false;
@@ -296,7 +266,6 @@ document.addEventListener("keydown", e => {
     // Move Up
     if (keysPressed.up && currentY > 0) {
         if (color == "red"){
-            console.log("YOU'RE OUTTTT");
             subtitle.innerText = "You moved on a red light."
             retry.style.visibility = "visible";
             gameStart = false;
@@ -309,7 +278,6 @@ document.addEventListener("keydown", e => {
     // Move Down
     if (keysPressed.down && currentY < mapHeightInVH - playerHeightInVH) {
         if (color == "red"){
-            console.log("YOU'RE OUTTTT");
             subtitle.innerText = "You moved on a red light."
             retry.style.visibility = "visible";
             gameStart = false;
@@ -319,6 +287,8 @@ document.addEventListener("keydown", e => {
         playerBox.style.setProperty('--y', currentY);
     }
 });
+
+// Playing Stopped
 document.addEventListener("keyup", e => {
     if (e.key === "ArrowRight") {
         keysPressed.right = false
@@ -328,16 +298,16 @@ document.addEventListener("keyup", e => {
     if (e.key === "ArrowLeft") {
         keysPressed.left = false
         stopChangingFrames();
-        isCahngingFrame = false;
+        isChangingFrame = false;
     };
     if (e.key === "ArrowUp") {
         keysPressed.up = false
         stopChangingFrames();
-        isCahngingFrame = false;
+        isChangingFrame = false;
     };
     if (e.key === "ArrowDown"){
         keysPressed.down = false
         stopChangingFrames();
-        isCahngingFrame = false;
+        isChangingFrame = false;
     };
 });
