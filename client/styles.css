@@ -53,6 +53,7 @@ body {
     font-size: 3rem;
     font-weight: 700;
     border-radius: 20px;
+    visibility: hidden;
 }
 #map-area {
     width: 95vw;
@@ -133,7 +134,9 @@ body {
 #new-game{
     visibility: hidden;
     position: absolute;
-    background-color: rgba(0, 109, 27, 0.084);
+    /* background-color: rgba(0, 109, 27, 0.084); */
+    background-color: rgb(195, 222, 201);
+
     width: 50vw;
     height: 20vh;
     left: 50%;

@@ -27,7 +27,6 @@ const startTimer = () => {
             timer.innerText = `00:${time.toString().padStart(2, '0')}`;
         } else {
             gameStart = false;
-            console.log("no time");
             clearInterval(timerInterval); 
         }    
     }, 1000)
@@ -37,7 +36,7 @@ const startTimer = () => {
 let changeBackgroundTimeout; 
 const changeBackground = () => {
     audio.playbackRate = 1.2;
-    console.log("Audio playback rate after reset: ", audio.playbackRate);
+    // console.log("Audio playback rate after reset: ", audio.playbackRate);
 
     audio.play();
     color = "green";
@@ -63,7 +62,7 @@ const changeBackground = () => {
                 }
                 audio.playbackRate += (Math.random() * 1) - 0.25;  // Random change between -0.25 and +1.00
                 audio.playbackRate = Math.max(1, Math.min(audio.playbackRate, 3.8)); // Clamp between 0.75 and 4
-                console.log(audio.playbackRate);    
+                // console.log(audio.playbackRate);    
                 audio.play();
                 // map.style.backgroundColor = 'var(--green)';
                 bot.classList.replace('bot-left', 'bot-right');
@@ -99,6 +98,7 @@ const newGame = document.getElementById("new-game");
 const resetGame = () => {
     // Reset game state
     gameStart = true;
+    gameReseted = true;
     gameLost = false;
     gameWin = false;
     color = "green";  // Reset color to green
@@ -133,8 +133,6 @@ const resetGame = () => {
     changeBackground();
 };
 const refreshGame = () => {
-    console.log("retried");
-
     subtitle.innerText = "Retrying..";
     retry.style.visibility = "hidden";
     newGame.style.visibility = "hidden";
@@ -224,18 +222,24 @@ const changeDollFrames = () => {
     dollTimeouts = [];
     for (let i = 0; i < dollFrame.length; i++) {
         const timeout = setTimeout(() => {
-            console.log(dollFrame[i]);
             bot.style.backgroundImage = `url(${dollFrame[i]})`;
         }, i * 100);
         dollTimeouts.push(timeout);
     }
 }
 
-
+let gameReseted = true;
 // Player Movement, // Checks for Win Condition
 document.addEventListener("keydown", e => {
-    if (!gameStart) {
+    if (!gameStart && e.key === "ArrowRight" && gameReseted) {
+        startTimer();
+        changeBackground();
+        gameStart = true;
+        gameReseted = false;
         return; 
+    }
+    if (!gameStart) {
+        return;
     }
     if (e.key === "ArrowRight") {
         keysPressed.right = true
